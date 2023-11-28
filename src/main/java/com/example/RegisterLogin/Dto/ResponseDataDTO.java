@@ -27,6 +27,7 @@ public class ResponseDataDTO {
 
     public ResponseDataDTO(ResponsesData data) {
         this.id = data.getId();
+        this.eventId = (data.getEventData() != null) ? data.getEventData().getId() : null;
         this.attendFlag = data.isAttendFlag();
         this.customResponse = data.getCustomResponse();
         this.response1 = data.getResponse1();

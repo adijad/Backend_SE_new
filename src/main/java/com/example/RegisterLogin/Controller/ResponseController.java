@@ -1,5 +1,6 @@
 package com.example.RegisterLogin.Controller;
 import com.example.RegisterLogin.Dto.ResponseDataDTO;
+import com.example.RegisterLogin.Entity.EventData;
 import com.example.RegisterLogin.Entity.ResponsesData;
 import com.example.RegisterLogin.Repo.ResponseDataRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,6 +35,7 @@ public class ResponseController {
                 responsesData.setInvitationImageData(imageData);
             }
 
+            System.out.println(responsesData.getEventData());
             ResponsesData savedResponse = repository.save(responsesData);
             return new ResponseEntity<>(savedResponse, HttpStatus.CREATED);
         } catch (Exception e) {
@@ -47,9 +49,15 @@ public class ResponseController {
         try {
             List<ResponsesData> allResponses = repository.findAll();
             List<ResponseDataDTO> dtos = allResponses.stream()
-                    .map(ResponseDataDTO::new) // Using constructor for mapping
+                    .peek(responseData -> {
+                        EventData eventData = responseData.getEventData();
+                        // Trigger loading of eventData if not loaded (avoiding lazy loading)
+                        if (eventData != null) {
+                            System.out.println(eventData.getEventTitle()); // Replace with the actual method to fetch the event title
+                        }
+                    })
+                    .map(ResponseDataDTO::new)
                     .collect(Collectors.toList());
-
             return ResponseEntity.ok(dtos);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

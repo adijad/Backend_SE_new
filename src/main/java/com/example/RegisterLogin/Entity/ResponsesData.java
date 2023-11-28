@@ -9,6 +9,9 @@ public class ResponsesData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "event_id", insertable = false, updatable = false)
+    private Long eventId;
+
     @ManyToOne
     @JoinColumn(name = "event_id", referencedColumnName = "id")
     private EventData eventData;
@@ -137,5 +140,13 @@ public class ResponsesData {
 
     public void setEventData(EventData eventData) {
         this.eventData = eventData;
+    }
+
+    public Long getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
     }
 }
