@@ -33,6 +33,7 @@ public ResponseEntity<EventData> createOrUpdateEvent(@RequestPart("event") Strin
         if (file != null && !file.isEmpty()) {
             eventData.setInvitationImageData(file.getBytes());
         }
+        //  System.out.println(eventData);
         eventData = repository.save(eventData);
         return ResponseEntity.ok(eventData);
     } catch (IOException e) {
@@ -46,6 +47,13 @@ public ResponseEntity<EventData> createOrUpdateEvent(@RequestPart("event") Strin
         return ResponseEntity.ok(repository.findAll());
  }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<EventData> getEventById(@PathVariable Long id) {
+        System.out.println(id);
+    return repository.findById(id)
+                .map(eventData -> ResponseEntity.ok(eventData))
+                .orElse(ResponseEntity.notFound().build());
+    }
 //    @CrossOrigin
 //    @PostMapping("/upload-image")
 //    public ResponseEntity<EventData> uploadImage(@RequestPart("file") MultipartFile file,
